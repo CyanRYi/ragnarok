@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tech.sollabs.ragnarok.RagnarokFilter;
 import tech.sollabs.ragnarok.RagnarokWatcher;
-import tech.sollabs.ragnarok.RagnarokWebHandler;
+import tech.sollabs.ragnarok.RagnarokWebFilter;
 
 import javax.annotation.PreDestroy;
 
@@ -31,14 +31,14 @@ public class RagnarokConfiguration {
 
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     @Bean
-    public RagnarokFilter ragnarokFirewallFilter() {
+    public RagnarokFilter ragnarokFilter() {
         return new RagnarokFilter(ragnarokWatcher());
     }
 
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     @Bean
-    public RagnarokWebHandler ragnarokFirewallHandler() {
-        return new RagnarokWebHandler(ragnarokWatcher());
+    public RagnarokWebFilter ragnarokWebFilter() {
+        return new RagnarokWebFilter(ragnarokWatcher());
     }
 
     @PreDestroy
