@@ -10,7 +10,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class RagnarokWatcher {
+/**
+ * Manage task count and shutting down status.
+ * When before Destroy this object, waiting process till all of registered tasks end
+ *
+ * @author Cyan Raphael Yi
+ * @since 0.1.0
+ */
+public class TaskWatcher {
 
     private Log log = LogFactory.getLog(getClass());
 
@@ -19,7 +26,7 @@ public class RagnarokWatcher {
     private AtomicBoolean shuttingDown = new AtomicBoolean(false);
     private Map<String, AtomicInteger> counters = new ConcurrentHashMap<>();
 
-    public RagnarokWatcher() {
+    public TaskWatcher() {
         counters.put(HTTP_REQUEST_KEY, new AtomicInteger());
     }
 
@@ -44,12 +51,12 @@ public class RagnarokWatcher {
         decreaseCount(HTTP_REQUEST_KEY);
     }
 
-    public void increaseCount(String counterKey) {
+    public void increaseCount(@NonNull String counterKey) {
         counters.get(counterKey)
                 .incrementAndGet();
     }
 
-    public void decreaseCount(String counterKey) {
+    public void decreaseCount(@NonNull String counterKey) {
         counters.get(counterKey)
                 .decrementAndGet();
     }

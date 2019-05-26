@@ -3,12 +3,12 @@ package tech.sollabs.ragnarok.configuration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tech.sollabs.ragnarok.web.RagnarokFilter;
-import tech.sollabs.ragnarok.RagnarokWatcher;
-import tech.sollabs.ragnarok.web.RagnarokWebFilter;
+import tech.sollabs.ragnarok.TaskWatcher;
+import tech.sollabs.ragnarok.web.ServletWebFilter;
+import tech.sollabs.ragnarok.web.WebfluxWebFilter;
 
 /**
- * Ragnarok Configuration
+ * Greceful Shut down Configuration for Ragnarok module
  *
  * @author Cyan Raphael Yi
  * @since 0.1.0
@@ -18,19 +18,19 @@ import tech.sollabs.ragnarok.web.RagnarokWebFilter;
 public class RagnarokConfiguration {
 
     @Bean
-    public RagnarokWatcher ragnarokWatcher() {
-        return new RagnarokWatcher();
+    public TaskWatcher taskWatcher() {
+        return new TaskWatcher();
     }
 
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
     @Bean
-    public RagnarokFilter ragnarokFilter() {
-        return new RagnarokFilter(ragnarokWatcher());
+    public ServletWebFilter ragnarokFilter() {
+        return new ServletWebFilter(taskWatcher());
     }
 
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
     @Bean
-    public RagnarokWebFilter ragnarokWebFilter() {
-        return new RagnarokWebFilter(ragnarokWatcher());
+    public WebfluxWebFilter ragnarokWebFilter() {
+        return new WebfluxWebFilter(taskWatcher());
     }
 }

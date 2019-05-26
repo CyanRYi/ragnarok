@@ -10,11 +10,11 @@ import java.lang.annotation.Target;
  *
  * @author Cyan Raphael Yi
  * @since 0.2.0
- * @see RagnarokTaskAspect
+ * @see TaskCounterAspect
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface RagnarokCounter {
+public @interface TaskCounter {
 
     /**
      * register taskKey for manage task count.

@@ -1,7 +1,7 @@
 package tech.sollabs.ragnarok.web;
 
 import org.springframework.web.filter.OncePerRequestFilter;
-import tech.sollabs.ragnarok.RagnarokWatcher;
+import tech.sollabs.ragnarok.TaskWatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -9,25 +9,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class RagnarokFilter extends OncePerRequestFilter {
+/**
+ * Servlet filter to manage web request for handle safety when application shut down.
+ *
+ * @author Cyan Raphael Yi
+ * @since 0.1.0
+ */
+public class ServletWebFilter extends OncePerRequestFilter {
 
-    private RagnarokWatcher ragnarokWatcher;
+    private TaskWatcher taskWatcher;
 
-    public RagnarokFilter(RagnarokWatcher ragnarokWatcher) {
-        this.ragnarokWatcher = ragnarokWatcher;
+    public ServletWebFilter(TaskWatcher taskWatcher) {
+        this.taskWatcher = taskWatcher;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        if (ragnarokWatcher.isShuttingDown()) {
+        if (taskWatcher.isShuttingDown()) {
             servletResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         } else {
             try {
-                ragnarokWatcher.increaseRequestCount();
+                taskWatcher.increaseRequestCount();
                 filterChain.doFilter(servletRequest, servletResponse);
             } finally {
-                ragnarokWatcher.decreaseRequestCount();
+                taskWatcher.decreaseRequestCount();
             }
         }
     }

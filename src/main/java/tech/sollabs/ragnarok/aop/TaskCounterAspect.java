@@ -5,16 +5,16 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
-import tech.sollabs.ragnarok.RagnarokWatcher;
+import tech.sollabs.ragnarok.TaskWatcher;
 
 import java.lang.reflect.Method;
 
 @Aspect
-public class RagnarokTaskAspect {
+public class TaskCounterAspect {
 
-    private RagnarokWatcher watcher;
+    private TaskWatcher watcher;
 
-    @Around("@annotation(RagnarokCounter)")
+    @Around("@annotation(tech.sollabs.ragnarok.aop.TaskCounter)")
     public Object countTasks(ProceedingJoinPoint joinPoint) throws Throwable {
 
         String taskKey = getTaskKey((MethodSignature) joinPoint.getSignature());
@@ -30,7 +30,7 @@ public class RagnarokTaskAspect {
     private String getTaskKey(MethodSignature methodSignature) {
 
         Method method = methodSignature.getMethod();
-        RagnarokCounter counterAnnotation = method.getAnnotation(RagnarokCounter.class);
+        TaskCounter counterAnnotation = method.getAnnotation(TaskCounter.class);
 
         String taskKey = counterAnnotation.value();
 
@@ -42,7 +42,7 @@ public class RagnarokTaskAspect {
     }
 
     @Autowired
-    public void setWatcher(RagnarokWatcher watcher) {
+    public void setWatcher(TaskWatcher watcher) {
         this.watcher = watcher;
     }
 }

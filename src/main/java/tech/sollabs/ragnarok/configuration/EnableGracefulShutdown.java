@@ -18,5 +18,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Import(RagnarokConfiguration.class)
-public @interface EnableRagnarok {
+public @interface EnableGracefulShutdown {
 }
