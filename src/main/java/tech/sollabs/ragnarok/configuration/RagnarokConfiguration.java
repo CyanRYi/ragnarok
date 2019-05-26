@@ -1,9 +1,12 @@
 package tech.sollabs.ragnarok.configuration;
 
+import org.springframework.boot.actuate.health.HealthIndicator;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tech.sollabs.ragnarok.TaskWatcher;
+import tech.sollabs.ragnarok.actuator.RagnarokHealthIndicator;
 import tech.sollabs.ragnarok.web.ServletWebFilter;
 import tech.sollabs.ragnarok.web.WebfluxWebFilter;
 
@@ -20,6 +23,12 @@ public class RagnarokConfiguration {
     @Bean
     public TaskWatcher taskWatcher() {
         return new TaskWatcher();
+    }
+
+    @ConditionalOnClass(HealthIndicator.class)
+    @Bean
+    public HealthIndicator ragnarokHealthIndicator() {
+        return new RagnarokHealthIndicator(taskWatcher());
     }
 
     @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
