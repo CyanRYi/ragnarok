@@ -1,4 +1,4 @@
-package tech.sollabs.ragnarok;
+package tech.sollabs.ragnarok.configuration;
 
 import org.springframework.context.annotation.Import;
 import tech.sollabs.ragnarok.configuration.RagnarokConfiguration;

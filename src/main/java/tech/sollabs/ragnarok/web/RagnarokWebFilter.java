@@ -1,4 +1,4 @@
-package tech.sollabs.ragnarok;
+package tech.sollabs.ragnarok.web;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;

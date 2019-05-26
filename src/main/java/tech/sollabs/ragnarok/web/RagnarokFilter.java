@@ -1,4 +1,4 @@
-package tech.sollabs.ragnarok;
+package tech.sollabs.ragnarok.web;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 import tech.sollabs.ragnarok.configuration.RagnarokConfiguration;
@@ -23,7 +23,6 @@ public class RagnarokFilter extends OncePerRequestFilter {
         if (RagnarokConfiguration.requestedShutdown) {
             servletResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         } else {
-
             try {
                 ragnarokWatcher.increaseRequestCount();
                 filterChain.doFilter(servletRequest, servletResponse);
