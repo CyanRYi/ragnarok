@@ -1,7 +1,7 @@
 package tech.sollabs.ragnarok.web;
 
 import org.springframework.web.filter.OncePerRequestFilter;
-import tech.sollabs.ragnarok.configuration.RagnarokConfiguration;
+import tech.sollabs.ragnarok.RagnarokWatcher;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ public class RagnarokFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest servletRequest, HttpServletResponse servletResponse, FilterChain filterChain) throws ServletException, IOException {
 
-        if (RagnarokConfiguration.requestedShutdown) {
+        if (ragnarokWatcher.isShuttingDown()) {
             servletResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         } else {
             try {

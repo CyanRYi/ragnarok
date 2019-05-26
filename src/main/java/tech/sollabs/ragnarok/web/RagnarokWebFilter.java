@@ -6,7 +6,7 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
-import tech.sollabs.ragnarok.configuration.RagnarokConfiguration;
+import tech.sollabs.ragnarok.RagnarokWatcher;
 
 public class RagnarokWebFilter implements WebFilter {
 
@@ -19,8 +19,8 @@ public class RagnarokWebFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 
-        if (RagnarokConfiguration.requestedShutdown) {
-            return Mono.error(new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "shut down"));
+        if (ragnarokWatcher.isShuttingDown()) {
+            return Mono.error(new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Application Shutting Down"));
         }
 
         ragnarokWatcher.increaseRequestCount();
